@@ -1,0 +1,22 @@
+.cover {
+  background-color: rgb(240, 240, 240);
+  border: solid black;
+  border-width: 3px;
+  justify-content: center;
+}
+.cardfront {
+  text-align: center;
+  padding: 5%;
+}
+.card-detail {
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  padding-left: 31%;
+  padding-right: 31%;
+}
