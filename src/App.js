@@ -9,6 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const api = axios.create({
   baseURL:'http://127.0.0.1:8000/stacks/'
 })
+const api2 = axios.create({
+  baseURL:'http://127.0.0.1:8000/flashcards/'
+})
 class App extends React.Component {
   constructor(){
     super();
@@ -40,6 +43,23 @@ createStack = async (event) => {
   let res = await api.post('/', {name: event.target.name.value,})
     console.log(res)
     this.getStacks();
+}
+createCard = async (event) => {
+  event.preventDefault()
+  let res = await api2.post('/',{front:event.target.front.value,
+  back:event.target.back.value,
+  stack: this.state.currentStack.id})
+    console.log(res)
+    this.getCards(this.state.currentStack.id);
+}
+editCard = async (event) => {
+  event.preventDefault()
+  let res = await api2.put(`/${this.state.currentCard.id}/`,{id:this.state.currentCard.id,
+  front:event.target.front.value,
+  back:event.target.back.value,
+  stack: this.state.currentStack.id})
+    console.log(res)
+    this.getCards(this.state.currentStack.id);
 }
 nextCard(){
   let tempCardNumber = this.state.cardNumber;
@@ -89,6 +109,30 @@ render() {
             <div className='cardbuttons'>
             <button onClick={() => this.previousCard()}>Back</button> {this.state.cardNumber + 1}/{this.state.cards.length} <button onClick={() => this.nextCard()}>Next</button>
           </div>
+      }
+    </div>
+    <div>
+    {this.state.currentStack != null &&
+  <form className='StackForm' onSubmit = {(event) => this.createCard(event)}>
+          <h3>Add a Card</h3>
+        <label htmlfor="front">Front: </label>
+        <input type = "text" id="front" name="front"/><br/>
+        <label htmlfor="back">Back: </label>
+        <input type = "text" id="back" name="back"/><br/>
+          <button type="submit">Submit</button>
+        </form>
+      }
+    </div>
+    <div>
+    {this.state.currentStack != null &&
+  <form className='StackForm' onSubmit = {(event) => this.editCard(event)}>
+          <h3>Edit This Card</h3>
+        <label htmlfor="front">Front: </label>
+        <input type = "text" id="front" name="front"/><br/>
+        <label htmlfor="back">Back: </label>
+        <input type = "text" id="back" name="back"/><br/>
+          <button type="submit">Submit</button>
+        </form>
       }
     </div>
   <form className='StackForm' onSubmit = {(event) => this.createStack(event)}>
